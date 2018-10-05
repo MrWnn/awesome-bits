@@ -302,50 +302,50 @@ return i2f(0x3f800000 + (uint32_t)(x * (0x800000 + 0x38aa22)))
 
 ## Strings
 
-**Convert letter to lowercase:**
+**转换字母为小写**
 ```
-OR by space => (x | ' ')
-Result is always lowercase even if letter is already lowercase
-eg. ('a' | ' ') => 'a' ; ('A' | ' ') => 'a'
+按位或空格字符 => (x | ' ')
+结果恒为小写字母，即使原字符已为小写
+例如：('a' | ' ') => 'a' ; ('A' | ' ') => 'a'
 ```
 
-**Convert letter to uppercase:**
+**转换字母为大写**
 ```
-AND by underline => (x & '_')
-Result is always uppercase even if letter is already uppercase
-eg. ('a' & '_') => 'A' ; ('A' & '_') => 'A'
+按位与下划线字符 => (x & '_')
+结果恒为大写字母，即使原字符已为大写
+例如：('a' & '_') => 'A' ; ('A' & '_') => 'A'
 ```
-**Invert letter's case:**
+**字母大小写互换**
 ```
-XOR by space => (x ^ ' ')
-eg. ('a' ^ ' ') => 'A' ; ('A' ^ ' ') => 'a'
+按位异或空格字符 => (x ^ ' ')
+例如：('a' ^ ' ') => 'A' ; ('A' ^ ' ') => 'a'
 ```
-**Letter's position in alphabet:**
+**字母表序号**
 ```
-AND by chr(31)/binary('11111')/(hex('1F') => (x & "\x1F")
-Result is in 1..26 range, letter case is not important
-eg. ('a' & "\x1F") => 1 ; ('B' & "\x1F") => 2
+按位与chr(31)/binary('11111')/(hex('1F') => (x & "\x1F")
+结果在1~26之间，大小写无关
+例如：('a' & "\x1F") => 1 ; ('B' & "\x1F") => 2
 ```
-**Get letter's position in alphabet (for Uppercase letters only):**
+**字母表序号（仅大写）**
 ```
-AND by ? => (x & '?') or XOR by @ => (x ^ '@')
-eg. ('C' & '?') => 3 ; ('Z' ^ '@') => 26
+按位与问号字符 => (x & '?') 或按位异或@字符 => (x ^ '@')
+例如：('C' & '?') => 3 ; ('Z' ^ '@') => 26
 ```
-**Get letter's position in alphabet (for lowercase letters only):**
+**字母表序号（仅小写）**
 ```
-XOR by backtick/chr(96)/binary('1100000')/hex('60') => (x ^ '`')
-eg. ('d' ^ '`') => 4 ; ('x' ^ '`') => 24
+按位异或反引号字符/chr(96)/binary('1100000')/hex('60') => (x ^ '`')
+例如：('d' ^ '`') => 4 ; ('x' ^ '`') => 24
 ```
 
 ## Miscellaneous
 
-**Fast color conversion from R5G5B5 to R8G8B8 pixel format using shifts**
+**使用位移运算快速转换R5G5B5颜色格式至R8G8B8**
 ```
 R8 = (R5 << 3) | (R5 >> 2)
 G8 = (R5 << 3) | (R5 >> 2)
 B8 = (R5 << 3) | (R5 >> 2)
 ```
-Note: using anything other than the English letters will produce garbage results
+注：使用任何非英文字符会产生错误结果
 
 ## Additional Resources
 
