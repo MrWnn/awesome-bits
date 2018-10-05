@@ -1,14 +1,14 @@
 # awesome-bits [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-> A curated list of awesome bitwise operations and tricks
+> 🐂🍺位运算技巧一览表
 >
-> Maintainer - [Keon Kim](https://github.com/keonkim)
-> Please feel free to [pull requests](https://github.com/keonkim/awesome-bits/pulls)
+> 维护者 - [Keon Kim](https://github.com/keonkim)
+> 欢迎[pull requests](https://github.com/keonkim/awesome-bits/pulls)
 
 
 
 
-## Integers
+## 整数
 **设置第n位（置为1）**
 ```
 x | (1<<n)
@@ -198,7 +198,7 @@ x = a ^ b ^ x;
 ```
 ~(n^m)&(n^m)+1 // returns 2^x where x is the position of the common bit (0 based)
 ```
-## Floats
+## 浮点数
 
 这些是受[fast inverse square root method](https://en.wikipedia.org/wiki/Fast_inverse_square_root)启发而来的技巧。 
 大部分为原创。
@@ -300,7 +300,7 @@ return i2f(0x3f800000 + (uint32_t)(x * (0x800000 + 0x38aa22)))
 
 推导见[此处](https://github.com/leegao/float-hacks#exp-1)。
 
-## Strings
+## 字符串
 
 **转换字母为小写**
 ```
@@ -337,7 +337,7 @@ return i2f(0x3f800000 + (uint32_t)(x * (0x800000 + 0x38aa22)))
 例如：('d' ^ '`') => 4 ; ('x' ^ '`') => 24
 ```
 
-## Miscellaneous
+## 杂项
 
 **使用位移运算快速转换R5G5B5颜色格式至R8G8B8**
 ```
@@ -347,7 +347,7 @@ B8 = (R5 << 3) | (R5 >> 2)
 ```
 注：使用任何非英文字符会产生错误结果
 
-## Additional Resources
+## 相关资源
 
 * [Bit Twiddling Hacks](https://graphics.stanford.edu/~seander/bithacks.html)
 * [Floating Point Hacks](https://github.com/leegao/float-hacks)
