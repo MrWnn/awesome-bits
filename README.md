@@ -200,10 +200,10 @@ x = a ^ b ^ x;
 ```
 ## Floats
 
-These are techniques inspired by the [fast inverse square root method.](https://en.wikipedia.org/wiki/Fast_inverse_square_root) Most of these
-are original.
+这些是受[fast inverse square root method](https://en.wikipedia.org/wiki/Fast_inverse_square_root)启发而来的技巧。 
+大部分为原创。
 
-**Turn a float into a bit-array (unsigned uint32_t)**
+**float转换为bit数组(unsigned uint32_t)**
 ```c
 #include <stdint.h>
 typedef union {float flt; uint32_t bits} lens_t;
@@ -211,33 +211,33 @@ uint32_t f2i(float x) {
   return ((lens_t) {.flt = x}).bits;
 }
 ```
-<sub>*Caveat: Type pruning via unions is undefined in C++; use `std::memcpy` instead.*</sub>
+<sub>*注：使用union进行转换在C++中是未定义行为，改使用`std::memcpy`。*</sub>
 
-**Turn a bit-array back into a float**
+**将bit数组转换回float**
 ```c
 float i2f(uint32_t x) {
   return ((lens_t) {.bits = x}).flt;
 }
 ```
 
-**Approximate the bit-array of a *positive* float using `frexp`**
+**利用`frexp`从*正*浮点数中近似取出bit数组**
 
-*`frexp` gives the 2<sup>n</sup> decomposition of a number, so that `man, exp = frexp(x)` means that man * 2<sup>exp</sup> = x and 0.5 <= man < 1.*
+*`frexp`将数值按照2<sup>n</sup>进行分解，即`man, exp = frexp(x)`表示man * 2<sup>exp</sup> = x同时0.5 <= man < 1.*
 ```c
 man, exp = frexp(x);
 return (uint32_t)((2 * man + exp + 125) * 0x800000);
 ```
-<sub>*Caveat: This will have at most 2<sup>-16</sup> relative error, since man + 125 clobbers the last 8 bits, saving the first 16 bits of your mantissa.*</sub>
+<sub>*注：此操作最大产生2<sup>-16</sup>相对误差，由于man + 125覆盖了最后8位，保留了尾数的前16位。*</sub>
 
-**Fast Inverse Square Root**
+**快速计算平方根倒数**
 ```c
 return i2f(0x5f3759df - f2i(x) / 2);
 ```
-<sub>*Caveat: We're using the `i2f` and the `f2i` functions from above instead.*</sub>
+<sub>*注：此处使用了`i2f`与`f2i`函数。*</sub>
 
-See [this Wikipedia article](https://en.wikipedia.org/wiki/Fast_inverse_square_root#A_worked_example) for reference.
+见[Wikipedia](https://en.wikipedia.org/wiki/Fast_inverse_square_root#A_worked_example)。
 
-**Fast n<sup>th</sup> Root of positive numbers via Infinite Series**
+**借助无穷级数快速计算正数的n次方根**
 ```c
 float root(float x, int n) {
 #DEFINE MAN_MASK 0x7fffff
@@ -250,21 +250,20 @@ float root(float x, int n) {
 }
 ```
 
-See [this blog post](http://www.phailed.me/2012/08/somewhat-fast-square-root/) regarding the derivation.
+推导见[此处](http://www.phailed.me/2012/08/somewhat-fast-square-root/)。
 
 **Fast Arbitrary Power**
 ```c
 return i2f((1 - exp) * (0x3f800000 - 0x5c416) + f2i(x) * exp)
 ```
 
-<sub>*Caveat: The `0x5c416` bias is given to center the method. If you plug in exp = -0.5, this gives the `0x5f3759df` magic constant of the fast inverse root method.*</sub>
+<sub>*注：`0x5c416`是此方法所给出的偏置值。若带入exp = -0.5，则为快速平方根倒数方法中的常量`0x5f3759df`。*</sub>
 
-See [these set of slides](http://www.bullshitmath.lol/FastRoot.slides.html) for a derivation of this method.
+此方法推导见[these set of slides](http://www.bullshitmath.lol/FastRoot.slides.html)。
 
-**Fast Geometric Mean**
+**快速几何平均**
 
-The geometric mean of a set of `n` numbers is the n<sup>th</sup> root of their
-product.
+几何平均数是n个数连乘积的n次方根
 
 ```c
 #include <stddef.h>
@@ -277,9 +276,9 @@ float geometric_mean(float* list, size_t length) {
   return i2f(accumulator / n);
 }
 ```
-See [here](https://github.com/leegao/float-hacks#geometric-mean-1) for its derivation.
+推导见[此处](https://github.com/leegao/float-hacks#geometric-mean-1)。
 
-**Fast Natural Logarithm**
+**快速自然对数**
 
 ```c
 #DEFINE EPSILON 1.1920928955078125e-07
@@ -287,20 +286,19 @@ See [here](https://github.com/leegao/float-hacks#geometric-mean-1) for its deriv
 return (f2i(x) - (0x3f800000 - 0x66774)) * EPSILON * LOG2
 ```
 
-<sub>*Caveat: The bias term of `0x66774` is meant to center the method. We multiply by `ln(2)` at the end because the rest of the method computes the `log2(x)` function.*</sub>
+<sub>*注：此方法使用`0x66774`作为偏置值。末尾乘以`ln(2)`是因为此方法其余部分计算的为`log2(x)`。*</sub>
 
-See [here](https://github.com/leegao/float-hacks#log-1) for its derivation.
+推导见[此处](https://github.com/leegao/float-hacks#log-1)。
 
-**Fast Natural Exp**
+**快速自然指数**
 
 ```c
 return i2f(0x3f800000 + (uint32_t)(x * (0x800000 + 0x38aa22)))
 ```
 
-<sub>*Caveat: The bias term of `0x38aa22` here corresponds to a multiplicative scaling of the base. In particular, it
-corresponds to `z` such that 2<sup>z</sup> = e*</sub>
+<sub>*注：偏置值`0x38aa22`对应为基数的乘法系数。特别地，它对应着2<sup>z</sup> = e中的`z`*</sub>
 
-See [here](https://github.com/leegao/float-hacks#exp-1) for its derivation.
+推导见[此处](https://github.com/leegao/float-hacks#exp-1)。
 
 ## Strings
 
