@@ -9,19 +9,19 @@
 
 
 ## Integers
-**Set n<sup>th</sup> bit**
+**设置第n位（置为1）**
 ```
 x | (1<<n)
 ```
-**Unset n<sup>th</sup> bit**
+**取消第n位（置为0）**
  ```
  x & ~(1<<n)
  ```
-**Toggle n<sup>th</sup> bit**
+**切换第n位**
 ```
 x ^ (1<<n)
 ```
-**Round up to the next power of two**
+**向上取整至2的幂**
 ```
 unsigned int v; //only works if v is 32 bit
 v--;
@@ -32,57 +32,57 @@ v |= v >> 8;
 v |= v >> 16;
 v++;
 ```
-**Round down / floor a number**
+**向下取整**
 ```
 n >> 0
 
 5.7812 >> 0 // 5
 
 ```
-**Get the maximum integer**
+**取最大int值**
 ```
 int maxInt = ~(1 << 31);
 int maxInt = (1 << 31) - 1;
 int maxInt = (1 << -1) - 1;
 int maxInt = -1u >> 1;
 ```
-**Get the minimum integer**
+**取最小int值**
 ```
 int minInt = 1 << 31;
 int minInt = 1 << -1;
 ```
-**Get the maximum long**
+**取最大long值**
 ```
 long maxLong = ((long)1 << 127) - 1;
 ```
-**Multiply by 2**
+**乘以2**
 ```
 n << 1; // n*2
 ```
-**Divide by 2**
+**除以2**
 ```
 n >> 1; // n/2
 ```
-**Multiply by the m<sup>th</sup> power of 2**
+**乘以2的m次幂**
 ```
 n << m;
 ```
-**Divide by the m<sup>th</sup> power of 2**
+**除以2的m次幂**
 ```
 n >> m;
 ```
-**Check Equality**
+**检查相等**
 
-<sub>*This is 35% faster in Javascript*</sub>
+<sub>*在Javascript中快35%*</sub>
 ```
 (a^b) == 0; // a == b
 !(a^b) // use in an if
 ```
-**Check if a number is odd**
+**检查奇数**
 ```
 (n & 1) == 1;
 ```
-**Exchange (swap) two values**
+**交换两个值**
 ```
 //version 1
 a ^= b;
@@ -92,7 +92,7 @@ a ^= b;
 //version 2
 a = a ^ b ^ (b = a)
 ```
-**Get the absolute value**
+**取绝对值**
 ```
 //version 1
 x < 0 ? -x : x;
@@ -100,49 +100,49 @@ x < 0 ? -x : x;
 //version 2
 (x ^ (x >> 31)) - (x >> 31);
 ```
-**Get the max of two values**
+**取二者最大值**
 ```
 b & ((a-b) >> 31) | a & (~(a-b) >> 31);
 ```
-**Get the min of two values**
+**取二者最小值**
 ```
 a & ((a-b) >> 31) | b & (~(a-b) >> 31);
 ```
-**Check whether both numbers have the same sign**
+**检查符号一致性**
 ```
 (x ^ y) >= 0;
 ```
-**Flip the sign**
+**符号取反**
 ```
 i = ~i + 1; // or
 i = (i ^ -1) + 1; // i = -i
 ```
-**Calculate 2<sup>n</sup>**
+**计算2<sup>n</sup>**
 ```
 1 << n;
 ```
-**Whether a number is power of 2**
+**是否为2的幂**
 ```
 n > 0 && (n & (n - 1)) == 0;
 ```
-**Modulo 2<sup>n</sup> against m**
+**m对2<sup>n</sup>取模**
 ```
 m & ((1 << n) - 1);
 ```
-**Get the average**
+**取平均值**
 ```
 (x + y) >> 1;
 ((x ^ y) >> 1) + (x & y);
 ```
-**Get the m<sup>th</sup> bit of n (from low to high)**
+**取n的第m位（由低到高）**
 ```
 (n >> (m-1)) & 1;
 ```
-**Set the m<sup>th</sup> bit of n to 0 (from low to high)**
+**置n的第m位为0（由低到高）**
 ```
 n & ~(1 << (m-1));
 ```
-**Check if n<sup>th</sup> bit is set**
+**检查第n位是否为1**
 ```
 if (x & (1<<n)) {
   n-th bit is set
@@ -150,21 +150,21 @@ if (x & (1<<n)) {
   n-th bit is not set
 }
 ```
-**Isolate (extract) the right-most 1 bit**
+**分离（提取）右起第一个为1的位**
 ```
 x & (-x)
 ```
-**Isolate (extract) the right-most 0 bit**
+**分离（提取）右起第一个为0的位**
 ```
 ~x & (x+1)
 ```
 
-**Set the right-most 0 bit to 1**
+**置右起第一个0位为1**
 ```
 x | (x+1)
 ```
 
-**Set the right-most 1 bit to 0**
+**置右起第一个1位为0**
 ```
 x & (x-1)
 ```
@@ -177,7 +177,7 @@ x & (x-1)
 ```
 ~-n
 ```
-**Get the negative value of a number**
+**符号取反**
 ```
 ~n + 1;
 (n ^ -1) + 1;
@@ -186,15 +186,15 @@ x & (x-1)
 ```
 x = a ^ b ^ x;
 ```
-**Swap Adjacent bits**
+**交换相邻位**
 ```
 ((n & 10101010) >> 1) | ((n & 01010101) << 1)
 ```
-**Different rightmost bit of numbers m & n**
+**m与n最右侧的相反位**
 ```
 (n^m)&-(n^m) // returns 2^x where x is the position of the different bit (0 based)
 ```
-**Common rightmost bit of numbers m & n**
+**m与n最右侧的相同位**
 ```
 ~(n^m)&(n^m)+1 // returns 2^x where x is the position of the common bit (0 based)
 ```
